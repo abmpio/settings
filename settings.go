@@ -54,46 +54,11 @@ func AllSettings() []Setting {
 	return settings
 }
 
-func GetValue(name string) *string {
+func GetValue(name string) interface{} {
 	settingValue, ok := _settings[name]
 	if !ok || settingValue == nil {
 		return nil
 	}
 	v := settingValue.Value()
 	return &v
-}
-
-func GetValueAsBool(name string) *bool {
-	settingValue, ok := _settings[name]
-	if !ok || settingValue == nil {
-		return nil
-	}
-	v := settingValue.ValueAsBool()
-	return &v
-}
-
-func GetValueAsInt32(name string) *int32 {
-	settingValue, ok := _settings[name]
-	if !ok || settingValue == nil {
-		return nil
-	}
-	v := settingValue.ValueAsInt32()
-	return &v
-}
-
-func GetValueAsInt64(name string) *int64 {
-	settingValue, ok := _settings[name]
-	if !ok || settingValue == nil {
-		return nil
-	}
-	v := settingValue.ValueAsInt64()
-	return &v
-}
-
-func GetValueAs(name string, v interface{}) error {
-	settingValue, ok := _settings[name]
-	if !ok || settingValue == nil {
-		return nil
-	}
-	return settingValue.ValueToPtr(v)
 }
