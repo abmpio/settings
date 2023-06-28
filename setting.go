@@ -10,7 +10,9 @@ type Setting struct {
 	mongodbr.AuditedEntity `bson:",inline"`
 
 	ValueType ValueFieldType `json:"valueType" bson:"valueType"`
-	NameValue `bson:",inline"`
+	//当值为true时,表示此值是一个受保护的属性值,服务器不会将数据发送到前端
+	ProtectedInUi bool `json:"protectedInUi" bson:"protectedInUi"`
+	NameValue     `bson:",inline"`
 }
 
 func (s *Setting) Value() interface{} {
