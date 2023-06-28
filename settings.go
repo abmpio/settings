@@ -19,7 +19,7 @@ func Setup(settings []Setting) {
 }
 
 // set setting
-func Set(name string, value string) {
+func Set(name string, value interface{}) {
 	if name == "" {
 		return
 	}
