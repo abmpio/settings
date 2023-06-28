@@ -16,3 +16,14 @@ type Setting struct {
 func (s *Setting) Value() interface{} {
 	return s.NameValue.Value
 }
+
+func (s *Setting) ValueAsString() string {
+	if s.NameValue.Value == nil {
+		return ""
+	}
+	stringValue, ok := s.NameValue.Value.(string)
+	if ok {
+		return stringValue
+	}
+	return ""
+}

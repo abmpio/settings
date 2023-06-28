@@ -62,3 +62,11 @@ func GetValue(name string) interface{} {
 	v := settingValue.Value()
 	return &v
 }
+
+func GetValueAsString(name string) string {
+	settingValue, ok := _settings[name]
+	if !ok || settingValue == nil {
+		return ""
+	}
+	return settingValue.ValueAsString()
+}
