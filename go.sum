@@ -1,3 +1,5 @@
+github.com/abmpio/mongodbr v0.0.0-20230713130758-03f7f55fbe15 h1:R9qpa89fqRYFtpc+WeyKVGQZUd+QGX/vlK48xSGkJHw=
+github.com/abmpio/mongodbr v0.0.0-20230713130758-03f7f55fbe15/go.mod h1:BBOoqVKwv+xv3NG/IuZUPMOHuGKf3TkT0yMcbFvBfQI=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/golang/snappy v0.0.1/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=
