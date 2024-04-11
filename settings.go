@@ -1,29 +1,46 @@
 package settings
 
-import "sort"
+import (
+	"sort"
+	"sync"
+)
 
 var (
-	_settings map[string]*Setting = make(map[string]*Setting)
+	_settings map[string]map[string]*Setting = map[string]map[string]*Setting{}
+	_rwLock   sync.RWMutex
 )
+
+func ensureAppExist(appName string) map[string]*Setting {
+	_rwLock.Lock()
+	defer _rwLock.Unlock()
+	appSettings, ok := _settings[appName]
+	if !ok {
+		appSettings = make(map[string]*Setting)
+		_settings[appName] = appSettings
+	}
+	return appSettings
+}
 
 // setup settings
 func Setup(settings []Setting) {
-	_settings = make(map[string]*Setting)
+	_settings = map[string]map[string]*Setting{}
 	if len(settings) <= 0 {
 		return
 	}
 
 	for i := range settings {
-		_settings[settings[i].Name] = &settings[i]
+		appSettings := ensureAppExist(settings[i].AppName)
+		appSettings[settings[i].Name] = &settings[i]
 	}
 }
 
 // set setting
-func Set(name string, value interface{}) {
+func Set(appName string, name string, value interface{}) {
 	if name == "" {
 		return
 	}
-	_settings[name] = &Setting{
+	appSettings := ensureAppExist(appName)
+	appSettings[name] = &Setting{
 		NameValue: NameValue{
 			Name:  name,
 			Value: value,
@@ -32,20 +49,23 @@ func Set(name string, value interface{}) {
 }
 
 // remove name
-func Remove(name string) {
-	delete(_settings, name)
+func Remove(appName string, name string) {
+	appSettings := ensureAppExist(appName)
+	delete(appSettings, name)
 }
 
-func AllSettings() []Setting {
+func AllSettings(appName string) []Setting {
+	appSettings := ensureAppExist(appName)
+
 	keys := make([]string, 0)
-	for key := range _settings {
+	for key := range appSettings {
 		keys = append(keys, key)
 	}
 	// sort
 	sort.Strings(keys)
 	settings := make([]Setting, 0)
 	for _, eachKey := range keys {
-		value, ok := _settings[eachKey]
+		value, ok := appSettings[eachKey]
 		if !ok || value == nil {
 			continue
 		}
@@ -54,8 +74,9 @@ func AllSettings() []Setting {
 	return settings
 }
 
-func GetValue(name string) interface{} {
-	settingValue, ok := _settings[name]
+func GetValue(appName string, name string) interface{} {
+	appSettings := ensureAppExist(appName)
+	settingValue, ok := appSettings[name]
 	if !ok || settingValue == nil {
 		return nil
 	}
@@ -63,8 +84,9 @@ func GetValue(name string) interface{} {
 	return &v
 }
 
-func GetValueAsString(name string) string {
-	settingValue, ok := _settings[name]
+func GetValueAsString(appName string, name string) string {
+	appSettings := ensureAppExist(appName)
+	settingValue, ok := appSettings[name]
 	if !ok || settingValue == nil {
 		return ""
 	}
