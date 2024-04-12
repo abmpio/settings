@@ -6,6 +6,12 @@ import (
 
 type ValueFieldType string
 
+const (
+	ValueFieldType_String  = "string"
+	ValueFieldType_Boolean = "boolean"
+	ValueFieldType_Int     = "int"
+)
+
 type Setting struct {
 	mongodbr.AuditedEntity `bson:",inline"`
 
