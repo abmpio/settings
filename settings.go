@@ -22,15 +22,15 @@ func ensureAppExist(appName string) map[string]*Setting {
 }
 
 // setup settings
-func Setup(settings []Setting) {
+func Setup(settings []*Setting) {
 	_settings = map[string]map[string]*Setting{}
 	if len(settings) <= 0 {
 		return
 	}
 
-	for i := range settings {
-		appSettings := ensureAppExist(settings[i].AppName)
-		appSettings[settings[i].Name] = &settings[i]
+	for _, eachSetting := range settings {
+		appSettings := ensureAppExist(eachSetting.AppName)
+		appSettings[eachSetting.Name] = eachSetting
 	}
 }
 
