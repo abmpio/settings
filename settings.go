@@ -92,3 +92,21 @@ func GetValueAsString(appName string, name string) string {
 	}
 	return settingValue.ValueAsString()
 }
+
+// find setting in all app
+func GetValueAsStringInAll(name string) string {
+	_rwLock.RLock()
+	defer _rwLock.RUnlock()
+
+	for _, eachSettings := range _settings {
+		if eachSettings == nil {
+			continue
+		}
+		settingValue, ok := eachSettings[name]
+		if !ok {
+			continue
+		}
+		return settingValue.ValueAsString()
+	}
+	return ""
+}
