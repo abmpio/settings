@@ -1,15 +1,22 @@
 package settings
 
 import (
+	"time"
+
 	"github.com/abmpio/mongodbr"
 )
 
 type ValueFieldType string
 
 const (
-	ValueFieldType_String  = "string"
+	// string
+	ValueFieldType_String = "string"
+	// boolean
 	ValueFieldType_Boolean = "boolean"
-	ValueFieldType_Int     = "int"
+	// int
+	ValueFieldType_Int64 = "int64"
+	// time.Time
+	ValueFieldType_DateTime = "dateTime"
 )
 
 type Setting struct {
@@ -31,8 +38,45 @@ func (s *Setting) ValueAsString() string {
 		return ""
 	}
 	stringValue, ok := s.NameValue.Value.(string)
-	if ok {
-		return stringValue
+	if !ok {
+		return ""
 	}
-	return ""
+	return stringValue
+}
+
+// if Value is nil,return false
+func (s *Setting) ValueAsBoolean() bool {
+	if s.NameValue.Value == nil {
+		return false
+	}
+	boolValue, ok := s.NameValue.Value.(bool)
+	if !ok {
+		return false
+	}
+	return boolValue
+}
+
+// if Value is nil,return 0
+func (s *Setting) ValueAsInt64() int64 {
+	if s.NameValue.Value == nil {
+		return 0
+	}
+	intValue, ok := s.NameValue.Value.(int64)
+	if !ok {
+		return 0
+	}
+	return intValue
+}
+
+// if Value is nil,return nil
+func (s *Setting) ValueAsDateTime() *time.Time {
+	if s.NameValue.Value == nil {
+		return nil
+	}
+	timeValue, ok := s.NameValue.Value.(time.Time)
+	if !ok {
+		return nil
+	}
+	return &timeValue
+
 }

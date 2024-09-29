@@ -74,6 +74,35 @@ func AllSettings(appName string) []Setting {
 	return settings
 }
 
+// get Setting by name
+func GetSetting(appName string, name string) *Setting {
+	appSettings := ensureAppExist(appName)
+	settingValue, ok := appSettings[name]
+	if !ok || settingValue == nil {
+		return nil
+	}
+	return settingValue
+}
+
+// get Setting by name
+func GetSettingInAll(name string) *Setting {
+	_rwLock.RLock()
+	defer _rwLock.RUnlock()
+
+	for _, eachSettings := range _settings {
+		if eachSettings == nil {
+			continue
+		}
+		settingValue, ok := eachSettings[name]
+		if !ok {
+			continue
+		}
+		return settingValue
+	}
+	return nil
+}
+
+// get value by name and appName
 func GetValue(appName string, name string) interface{} {
 	appSettings := ensureAppExist(appName)
 	settingValue, ok := appSettings[name]
