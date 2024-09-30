@@ -13,8 +13,8 @@ const (
 	ValueFieldType_String = "string"
 	// boolean
 	ValueFieldType_Boolean = "boolean"
-	// int
-	ValueFieldType_Int64 = "int64"
+	// float64
+	ValueFieldType_Float64 = "float64"
 	// time.Time
 	ValueFieldType_DateTime = "dateTime"
 )
@@ -37,11 +37,11 @@ func (s *Setting) ValueAsString() string {
 	if s.NameValue.Value == nil {
 		return ""
 	}
-	stringValue, ok := s.NameValue.Value.(string)
+	value, ok := s.NameValue.Value.(string)
 	if !ok {
 		return ""
 	}
-	return stringValue
+	return value
 }
 
 // if Value is nil,return false
@@ -49,23 +49,23 @@ func (s *Setting) ValueAsBoolean() bool {
 	if s.NameValue.Value == nil {
 		return false
 	}
-	boolValue, ok := s.NameValue.Value.(bool)
+	value, ok := s.NameValue.Value.(bool)
 	if !ok {
 		return false
 	}
-	return boolValue
+	return value
 }
 
 // if Value is nil,return 0
-func (s *Setting) ValueAsInt64() int64 {
+func (s *Setting) ValueAsFloat64() float64 {
 	if s.NameValue.Value == nil {
 		return 0
 	}
-	intValue, ok := s.NameValue.Value.(int64)
+	value, ok := s.NameValue.Value.(float64)
 	if !ok {
 		return 0
 	}
-	return intValue
+	return value
 }
 
 // if Value is nil,return nil
@@ -73,10 +73,10 @@ func (s *Setting) ValueAsDateTime() *time.Time {
 	if s.NameValue.Value == nil {
 		return nil
 	}
-	timeValue, ok := s.NameValue.Value.(time.Time)
+	value, ok := s.NameValue.Value.(time.Time)
 	if !ok {
 		return nil
 	}
-	return &timeValue
+	return &value
 
 }
