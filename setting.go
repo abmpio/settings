@@ -3,6 +3,7 @@ package settings
 import (
 	"time"
 
+	"github.com/abmpio/libx/lang"
 	"github.com/abmpio/mongodbr"
 )
 
@@ -27,8 +28,8 @@ type Setting struct {
 	Tag         string         `json:"tag" bson:"tag"`
 	Description string         `json:"description" bson:"description"`
 	//当值为true时,表示此值是一个受保护的属性值,服务器不会将数据发送到前端
-	ProtectedInUi bool `json:"protectedInUi" bson:"protectedInUi"`
-	NameValue     `bson:",inline"`
+	ProtectedInUi  bool `json:"protectedInUi" bson:"protectedInUi"`
+	lang.NameValue `bson:",inline"`
 }
 
 func (s *Setting) Value() interface{} {

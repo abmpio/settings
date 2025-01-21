@@ -3,6 +3,8 @@ package settings
 import (
 	"sort"
 	"sync"
+
+	"github.com/abmpio/libx/lang"
 )
 
 var (
@@ -41,7 +43,7 @@ func Set(appName string, name string, value interface{}) {
 	}
 	appSettings := ensureAppExist(appName)
 	appSettings[name] = &Setting{
-		NameValue: NameValue{
+		NameValue: lang.NameValue{
 			Name:  name,
 			Value: value,
 		},

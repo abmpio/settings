@@ -2,7 +2,10 @@ module github.com/abmpio/settings
 
 go 1.20
 
-require github.com/abmpio/mongodbr v0.0.0-20230713130758-03f7f55fbe15
+require (
+	github.com/abmpio/libx v0.0.0-20250121061354-239de96eb31c
+	github.com/abmpio/mongodbr v0.0.0-20230713130758-03f7f55fbe15
+)
 
 require (
 	github.com/golang/snappy v0.0.4 // indirect
