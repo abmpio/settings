@@ -1,6 +1,7 @@
 package settings
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/abmpio/libx/lang"
@@ -30,6 +31,44 @@ type Setting struct {
 	//当值为true时,表示此值是一个受保护的属性值,服务器不会将数据发送到前端
 	ProtectedInUi  bool `json:"protectedInUi" bson:"protectedInUi"`
 	lang.NameValue `bson:",inline"`
+}
+
+// NormalizeValue ensures that the NameValue.Value matches the specified ValueType.
+// If the value does not match the expected type, it sets a default value based on the ValueType.
+// For ValueFieldType_DateTime, it attempts to parse the string representation into a time.Time object.
+// Returns an error if the value cannot be normalized to the expected type.
+func (s *Setting) NormalizeValue() error {
+	switch s.ValueType {
+	case ValueFieldType_DateTime:
+		_, ok := s.NameValue.Value.(time.Time)
+		if ok {
+			return nil
+		}
+		v, err := time.Parse(time.RFC3339, s.ValueAsString())
+		if err != nil {
+			return fmt.Errorf("无效的时间值,%s", err.Error())
+		}
+		s.NameValue.Value = v
+	case ValueFieldType_Boolean:
+		_, ok := s.NameValue.Value.(bool)
+		if ok {
+			return nil
+		}
+		s.NameValue.Value = false
+	case ValueFieldType_Float64:
+		_, ok := s.NameValue.Value.(float64)
+		if ok {
+			return nil
+		}
+		s.NameValue.Value = float64(0)
+	case ValueFieldType_String:
+		_, ok := s.NameValue.Value.(string)
+		if ok {
+			return nil
+		}
+		s.NameValue.Value = ""
+	}
+	return nil
 }
 
 func (s *Setting) Value() interface{} {
