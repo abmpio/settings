@@ -11,13 +11,13 @@ type ValueFieldType string
 
 const (
 	// string
-	ValueFieldType_String = "string"
+	ValueFieldType_String ValueFieldType = "string"
 	// boolean
-	ValueFieldType_Boolean = "boolean"
+	ValueFieldType_Boolean ValueFieldType = "boolean"
 	// float64
-	ValueFieldType_Float64 = "float64"
+	ValueFieldType_Float64 ValueFieldType = "float64"
 	// time.Time
-	ValueFieldType_DateTime = "dateTime"
+	ValueFieldType_DateTime ValueFieldType = "dateTime"
 )
 
 type Setting struct {
@@ -82,4 +82,49 @@ func (s *Setting) ValueAsDateTime() *time.Time {
 	}
 	return &value
 
+}
+
+// ValueIsMatchType checks if the given value matches the specified ValueFieldType
+// Returns true if the value matches the type, false otherwise
+// For ValueFieldType_DateTime, nil is considered a valid value
+// For ValueFieldType_DateTime, both time.Time and *time.Time (non-nil) are considered valid types
+// For other types, only the exact type match is considered valid
+// Example:
+//
+//	ValueIsMatchType("example", ValueFieldType_String) => true
+//	ValueIsMatchType(123, ValueFieldType_String) => false
+//	ValueIsMatchType(true, ValueFieldType_Boolean) => true
+//	ValueIsMatchType(3.14, ValueFieldType_Float64) => true
+//	ValueIsMatchType(nil, ValueFieldType_DateTime) => true
+//	ValueIsMatchType(time.Now(), ValueFieldType_DateTime) => true
+//	ValueIsMatchType(&time.Time{}, ValueFieldType_DateTime) => true
+//	ValueIsMatchType(123, ValueFieldType_DateTime) => false
+func ValueIsMatchType(value interface{}, valueType ValueFieldType) bool {
+	switch valueType {
+	case ValueFieldType_String:
+		_, ok := value.(string)
+		return ok
+	case ValueFieldType_Boolean:
+		_, ok := value.(bool)
+		return ok
+	case ValueFieldType_Float64:
+		_, ok := value.(float64)
+		return ok
+	case ValueFieldType_DateTime:
+		if value == nil {
+			// nil
+			return true
+		}
+		switch v := value.(type) {
+		case time.Time:
+			return true
+		case *time.Time:
+			// non-nil pointer
+			return v != nil
+		default:
+			return false
+		}
+	default:
+		return false
+	}
 }
