@@ -6,7 +6,7 @@ toolchain go1.23.5
 
 require (
 	github.com/abmpio/libx v0.0.0-20251025150424-a9353a6e248f
-	github.com/abmpio/mongodbr v0.0.0-20260507123253-9b1ccc56b3eb
+	github.com/abmpio/mongodbr v0.0.0-20260508161118-64c0a0c6aacf
 )
 
 require (
